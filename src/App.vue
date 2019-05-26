@@ -2,6 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link to="/form">具有数据校验功能的表单组件 —— Form</router-link>|
+      <router-link to="/checkbox">组合多选框组件——CheckboxGroup & Checkbox</router-link>|
     </div>
     <router-view/>
   </div>
