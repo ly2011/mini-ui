@@ -16,6 +16,11 @@ export default new Router({
       path: '/checkbox',
       name: 'checkbox',
       component: () => import('./views/checkbox.vue')
+    },
+    {
+      path: '/display',
+      name: 'display',
+      component: () => import('./views/display.vue')
     }
   ]
 })
