@@ -5,6 +5,7 @@
       <router-link to="/checkbox">组合多选框组件——CheckboxGroup & Checkbox</router-link>|
       <router-link to="/display">动态渲染 .vue 文件的组件-- Display</router-link>|
       <router-link to="/alert">全局提示组件 -- Alert</router-link>|
+      <router-link to="/table-render">表格组件 -- Table</router-link>|
     </div>
     <router-view/>
   </div>

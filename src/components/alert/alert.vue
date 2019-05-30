@@ -1,31 +1,48 @@
 <template>
   <div class="alert">
     <div class="alert-main" v-for="item in notices" :key="item.name">
-      <div class="alert-content">{{ item.content }}</div>
+      <div class="alert-content" ref="content">
+        <div class="alert-content-text" v-html="item.content"></div>
+        <div class="alert-content-text">
+          <render-cell :render="item.render"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import RenderCell from './render'
+
 // Alert组件不同于常规的组件使用方式，它最终是通过JS来调用的，因此组件不用预留 props 和 events 接口
 let seed = 0
+const now = Date.now()
 
 function getUuid () {
-  return 'alert_' + (seed++)
+  return 'alert_' + now + '_' + (seed++)
 }
 
 export default {
   name: 'iAlert',
+  components: {
+    RenderCell
+  },
   data () {
     return {
       notices: []
     }
   },
   methods: {
+    // TODO: render 函数暂时还不能，过了duration被自动删除
     add (notice = {}) {
-      const name = getUuid()
+      const name = notice.name || getUuid()
 
-      let _notice = Object.assign({}, { name }, notice)
+      let _notice = Object.assign({}, {
+        content: '',
+        name
+      }, notice)
+
+      _notice.render = notice.render || function () { }
 
       this.notices.push(_notice)
 

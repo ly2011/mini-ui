@@ -8,12 +8,13 @@ function getMessageInstance () {
   return messageInstance
 }
 
-function notice ({ duration = 1.5, content = '' }) {
+function notice ({ duration = 1.5, content = '', ...otherProps }) {
   let instance = getMessageInstance()
 
   instance.add({
     content,
-    duration
+    duration,
+    ...otherProps
   })
 }
 

@@ -2,6 +2,7 @@
   <div>
     <button @click="handleOpen1">打开提示 1</button>
     <button @click="handleOpen2">打开提示 2</button>
+    <button @click="renderFunc">打开提示 3</button>
   </div>
 </template>
 
@@ -15,7 +16,20 @@ export default {
     },
     handleOpen2 () {
       this.$Alert.info({
+        duration: 3,
         content: '我是提示信息 2'
+      })
+    },
+    renderFunc () {
+      this.$Alert.info({
+        duration: 3,
+        render: h => {
+          return h('span', [
+            'This is created by ',
+            h('a', 'render'),
+            ' function'
+          ])
+        }
       })
     }
   }
