@@ -6,9 +6,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="(row, index) in data" :key="index">
-        <td v-for="(col, idx) in columns" :key="index + '_' + idx">
-          {{ row[col.key] }}
+      <tr v-for="(row, rowIndex) in data" :key="rowIndex">
+        <td v-for="(col, columnIndex) in columns" :key="rowIndex + '_' + columnIndex">
+          <template v-if="'render' in col">
+            <table-render :row="row" :column="col" :row-index="rowIndex" :column-index="columnIndex" :render="col.render"/>
+          </template>
+          <template v-else>{{ row[col.key] }}</template>
         </td>
       </tr>
     </tbody>
@@ -16,7 +19,9 @@
 </template>
 
 <script>
+import TableRender from './render.js'
 export default {
+  components: { TableRender },
   props: {
     columns: {
       type: Array,
@@ -49,7 +54,8 @@ export default {
     white-space: nowrap;
   }
 
-  th, td {
+  th,
+  td {
     padding: 8px 16px;
     border: 1px solid #e9e9e9;
     text-align: left;

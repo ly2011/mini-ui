@@ -15,22 +15,165 @@ export default {
       columns: [
         {
           title: '姓名',
-          key: 'name'
+          key: 'name',
+          render: (h, { row, column, rowIndex, columnIndex }) => {
+            let edit
+
+            // 当前行为聚焦时
+            if (this.editIndex === rowIndex) {
+              edit = [
+                h('input', {
+                  domProps: {
+                    value: row.name
+                  },
+                  on: {
+                    input: event => {
+                      this.editName = event.target.value
+                    }
+                  }
+                })
+              ]
+            } else {
+              edit = row.name
+            }
+
+            return h('div', [edit])
+          }
         },
         {
           title: '年龄',
-          key: 'age'
+          key: 'age',
+          render: (h, { row, column, rowIndex, columnIndex }) => {
+            let edit
+
+            // 当前行为聚焦时
+            if (this.editIndex === rowIndex) {
+              edit = [
+                h('input', {
+                  domProps: {
+                    value: row.age
+                  },
+                  on: {
+                    input: event => {
+                      this.editAge = event.target.value
+                    }
+                  }
+                })
+              ]
+            } else {
+              edit = row.age
+            }
+
+            return h('div', [
+              edit
+            ])
+          }
         },
         {
           title: '出生日期',
-          key: 'birthday'
+          key: 'birthday',
+          render: (h, { row, columns, rowIndex, columnIndex }) => {
+            let edit
+
+            // 当前行为聚焦时
+            if (this.editIndex === rowIndex) {
+              edit = [
+                h('input', {
+                  domProps: {
+                    value: row.birthday
+                  },
+                  on: {
+                    input: event => {
+                      this.editBirthday = event.target.value
+                    }
+                  }
+                })
+              ]
+            } else {
+              const date = new Date(parseInt(row.birthday, 10))
+              const year = date.getFullYear()
+              let month = date.getMonth() + 1
+              let day = date.getDate()
+              if (month < 10) month = '0' + month
+              if (day < 10) day = '0' + day
+              edit = `${year}-${month}-${day}`
+            }
+
+            return h('span', [edit])
+          }
         },
         {
           title: '地址',
-          key: 'address'
+          key: 'address',
+          render: (h, { row, column, rowIndex, columnIndex }) => {
+            let edit
+
+            // 当前行为聚焦时
+            if (this.editIndex === rowIndex) {
+              edit = [
+                h('input', {
+                  domProps: {
+                    value: row.address
+                  },
+                  on: {
+                    input: event => {
+                      this.editAddress = event.target.value
+                    }
+                  }
+                })
+              ]
+            } else {
+              edit = row.address
+            }
+
+            return h('div', [
+              edit
+            ])
+          }
         },
         {
-          title: '操作'
+          title: '操作',
+          render: (h, { row, column, rowIndex, columnIndex }) => {
+            // 如果当前行是编辑状态，则渲染两个按钮
+            if (this.editIndex === rowIndex) {
+              return [
+                h('button', {
+                  on: {
+                    click: () => {
+                      this.data[rowIndex].name = this.editName
+                      this.data[rowIndex].age = this.editAge
+                      this.data[rowIndex].birthday = this.editBirthday
+                      this.data[rowIndex].address = this.editAddress
+                      this.editIndex = -1
+                    }
+                  }
+                }, '保存'),
+                h('button', {
+                  style: {
+                    marginLeft: '6px'
+                  },
+                  on: {
+                    click: () => {
+                      // 点击取消，不报错源数据，直接退出
+                      this.editIndex = -1
+                    }
+                  }
+                }, '取消')
+              ]
+            } else { // 当前行是默认状态，渲染为一个按钮
+              return h('button', {
+                on: {
+                  click: () => {
+                    this.editName = row.name
+                    this.editAge = row.age
+                    this.editAddress = row.address
+                    this.editBirthday = row.birthday
+                    this.editIndex = rowIndex
+                  }
+                }
+              }, '修改')
+            }
+          }
         }
       ],
       data: [
@@ -58,7 +201,12 @@ export default {
           birthday: '687024000000',
           address: '深圳市南山区深南大道'
         }
-      ]
+      ],
+      editIndex: -1, // 当前聚焦的输入框的行数，当点击修改按钮时，再将它置为正确的行号
+      editName: '', // 第一列输入框
+      editAge: '', // 第二列输入框
+      editBirthday: '', // 第三列输入框
+      editAddress: '' // 第四列输入框
     }
   }
 }
