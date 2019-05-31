@@ -7,6 +7,7 @@
       <router-link to="/alert">全局提示组件 -- Alert</router-link>|
       <router-link to="/table-render">表格组件 Render-- Table</router-link>|
       <router-link to="/table-slot">表格组件 Slot -- Table</router-link>|
+      <router-link to="/tree">树形组件 -- Tree</router-link>|
     </div>
     <router-view/>
   </div>
