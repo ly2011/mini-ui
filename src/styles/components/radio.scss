@@ -1,0 +1,135 @@
+@import '../common/index.scss';
+
+$radio-prefix-cls: #{$css-prefix}radio;
+$radio-group-prefix-cls: #{$radio-prefix-cls}-group;
+$radio-inner-prefix-cls: #{$radio-prefix-cls}-inner;
+$radio-group-button-prefix-cls: #{$radio-group-prefix-cls}-button;
+
+.#{$radio-prefix-cls}-focus {
+  box-shadow: 0 0 0 2px #eee;
+  z-index: 1;
+}
+.#{$radio-prefix-cls} {
+  display: inline-block;
+  font-size: $font-size-small;
+  vertical-align: middle;
+  &-vertical {
+    .#{$radio-prefix-cls}-wrapper {
+      display: block;
+      height: 30px;
+      line-height: 30px;
+    }
+  }
+}
+
+.#{$radio-prefix-cls}-wrapper {
+  font-size: $font-size-small;
+  vertical-align: middle;
+  display: inline-block;
+  position: relative;
+  white-space: nowrap;
+  margin-right: 8px;
+  cursor: pointer;
+  &-disabled {
+    cursor: $cursor-disabled;
+  }
+}
+
+.#{$radio-prefix-cls} {
+  display: inline-block;
+  margin-right: 4px;
+  white-space: nowrap;
+  position: relative;
+  line-height: 1;
+  vertical-align: middle;
+  cursor: pointer;
+  &:hover {
+    .#{$radio-inner-prefix-cls} {
+      border-color: #bcbcbc;
+    }
+  }
+  &-inner {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    position: relative;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid $border-color-base;
+    border-radius: 50%;
+    transition: all $transition-time $ease-in-out;
+
+    &:after {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      left: 2px;
+      top: 2px;
+      border-radius: $border-radius-base;
+      display: table;
+      border-top: 0;
+      border-left: 0;
+      content: ' ';
+      background-color: $primary-color;
+      opacity: 0;
+      transition: all $transition-time $ease-in-out;
+      transform: scale(0);
+    }
+  }
+
+  &-input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+
+// 选中状态
+.#{$radio-prefix-cls}-checked {
+  .#{$radio-inner-prefix-cls} {
+    border-color: $primary-color;
+    &:after {
+      opacity: 1;
+      transform: scale(1);
+      transition: all $transition-time $ease-in-out;
+    }
+  }
+  &:hover {
+    .#{$radio-inner-prefix-cls} {
+      border-color: $primary-color;
+    }
+  }
+}
+
+.#{$radio-prefix-cls}-disabled {
+  cursor: $cursor-disabled;
+  .#{$radio-prefix-cls}-input {
+    cursor: $cursor-disabled;
+  }
+  &:hover {
+    .#{$radio-inner-prefix-cls} {
+      border-color: $border-color-base;
+    }
+  }
+  .#{$radio-inner-prefix-cls} {
+    border-color: $border-color-base;
+    background-color: #f3f3f3;
+    &:after {
+      background-color: #ccc;
+    }
+  }
+  .#{$radio-prefix-cls}-disabled + span {
+    color: #ccc;
+  }
+}
+
+span.#{$radio-prefix-cls} + * {
+  margin-left: 2px;
+  margin-right: 2px;
+}

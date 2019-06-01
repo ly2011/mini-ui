@@ -120,7 +120,7 @@ function typeOf (obj) {
   return map[toString.call(obj)]
 }
 // deepCopy
-function deepCopy (data) {
+export const deepCopy = data => {
   const t = typeOf(data)
   let o
 
@@ -144,4 +144,7 @@ function deepCopy (data) {
   return o
 }
 
-export { deepCopy }
+// 判断参数是否是其中一个
+export const oneOf = (value, validList = []) => {
+  return validList.includes(value)
+}

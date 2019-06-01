@@ -41,6 +41,11 @@ export default new Router({
       path: '/tree',
       name: 'tree',
       component: () => import('./views/tree.vue')
+    },
+    {
+      path: '/button',
+      name: 'button',
+      component: () => import('./views/button.vue')
     }
   ]
 })
