@@ -46,6 +46,11 @@ export default new Router({
       path: '/button',
       name: 'button',
       component: () => import('./views/button.vue')
+    },
+    {
+      path: '/tabs',
+      name: 'tabs',
+      component: () => import('./views/tabs.vue')
     }
   ]
 })
