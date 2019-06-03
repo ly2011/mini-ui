@@ -5,6 +5,7 @@
       <TabPane label="标签一" name="key1" v-if="showSecond" :index="1">标签一内容</TabPane>
       <TabPane label="标签二" name="key2" disabled :index="2">标签二内容</TabPane>
       <TabPane label="标签三" name="key3" :index="3">标签三内容</TabPane>
+      <TabPane :label="label4" name="key4" :index="4">标签四内容</TabPane>
     </Tabs>
   </div>
 </template>
@@ -20,7 +21,13 @@ export default {
   data () {
     return {
       key1: 'key1',
-      showSecond: false
+      showSecond: false,
+      label4: (h) => {
+        return h('div', [
+          h('span', '标签四-render'),
+          h('span', '+')
+        ])
+      }
     }
   }
 }

@@ -13,7 +13,7 @@ export default {
       type: String
     },
     label: {
-      type: String,
+      type: [String, Function],
       default: ''
     },
     disabled: {

@@ -9,7 +9,7 @@
               <div :class="barClasses" :style="barStyle"></div>
               <div v-for="(item, index) in navList" :key="index" @click="handleChange(index)" :class="tabCls(item)">
                 <Render v-if="item.labelType === 'function'" :render="item.label"></Render>
-                <template>{{item.label}}</template>
+                <template v-else>{{item.label}}</template>
               </div>
             </div>
           </div>
