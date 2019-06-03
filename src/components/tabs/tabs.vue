@@ -1,18 +1,22 @@
 <template>
   <div :class="wrapClasses">
     <div :class="[prefixCls + '-bar']">
-      <div :class="[prefixCls + '-nav-container']">
-        <div :class="[prefixCls + '-nav-wrap']">
-          <div :class="[prefixCls + '-nav-scroll']">
+      <div :class="[prefixCls + '-nav-container']" ref="navContainer">
+        <div :class="[prefixCls + '-nav-wrap']" ref="navWrap">
+          <div :class="[prefixCls + '-nav-scroll']" ref="navScroll">
             <div :class="[prefixCls + '-nav']" ref="nav">
+              <!-- 下拉 -->
               <div :class="barClasses" :style="barStyle"></div>
-              <div v-for="(item, index) in navList" :key="index" @click="handleChange(index)" :class="tabCls(item)">{{item.label}}</div>
+              <div v-for="(item, index) in navList" :key="index" @click="handleChange(index)" :class="tabCls(item)">
+                <Render v-if="item.labelType === 'function'" :render="item.label"></Render>
+                <template>{{item.label}}</template>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div :class="contentClasses" :style="contentStyle">
+    <div :class="contentClasses" :style="contentStyle" ref="panes">
       <slot></slot>
     </div>
   </div>
@@ -20,10 +24,14 @@
 
 <script>
 // eslint-disable-next-line
-import { oneOf, getStyle } from '@/utils/assist.js'
+import { oneOf, findComponentsDownward } from '@/utils/assist.js'
+import Render from './render.js'
 const prefixCls = 'i-tabs'
 export default {
   name: 'Tabs',
+  components: {
+    Render
+  },
   props: {
     value: {
       type: [String, Number]
@@ -33,12 +41,16 @@ export default {
     },
     size: {
       type: String,
-      default: 'default'
+      default: 'default',
+      validator (value) {
+        return oneOf(value, ['small', 'default'])
+      }
     },
     animated: {
       type: Boolean,
       default: false
-    }
+    },
+    beforeRemove: Function
   },
   data () {
     return {
@@ -64,12 +76,16 @@ export default {
       return [
         `${prefixCls}-content`,
         {
+          [`${prefixCls}-content-animated`]: this.animated
         }
       ]
     },
     barClasses () {
       return [
-        `${prefixCls}-ink-bar`
+        `${prefixCls}-ink-bar`,
+        {
+          [`${prefixCls}-ink-bar-animated`]: this.animated
+        }
       ]
     },
     contentStyle () {
@@ -90,7 +106,9 @@ export default {
         width: `${this.barWidth}px`
       }
       if (this.type === 'line') style.display = 'block'
-      style.left = `${this.barOffset}px`
+      if (this.animated) {
+        style.transform = `translate(${this.barOffset}px, 0px)`
+      } else { style.left = `${this.barOffset}px` }
 
       return style
     }
@@ -106,12 +124,27 @@ export default {
   },
   methods: {
     getTabs () {
-      return this.$children.filter(item => item.$options.name === 'TabPane')
+      // return this.$children.filter(item => item.$options.name === 'TabPane')
+      const AllTabPanes = findComponentsDownward(this, 'TabPane')
+      const TabPanes = []
+
+      AllTabPanes.forEach(item => {
+        TabPanes.push(item)
+      })
+
+      // 在 TabPane 使用 v-if 时，并不会按照预先的顺序渲染，这时可设置 index，并从小到大排序
+      TabPanes.sort((a, b) => {
+        if (a.index && b.index) {
+          return a.index > b.index ? 1 : -1
+        }
+      })
+      return TabPanes
     },
     updateNav () {
       this.navList = []
       this.getTabs().forEach((pane, index) => {
         this.navList.push({
+          labelType: typeof pane.label,
           label: pane.label,
           icon: pane.icon || '',
           name: pane.name || index,
@@ -130,15 +163,18 @@ export default {
     updateBar () {
       this.$nextTick(() => {
         const index = this.navList.findIndex((nav) => nav.name === this.name)
+        if (!this.$refs.nav) return
         const preTabs = this.$refs.nav.querySelectorAll(`.${prefixCls}-tab`)
         const tab = preTabs[index]
-        this.barWidth = parseFloat(getStyle(tab, 'width'))
+        // 修复关闭最后一个TabPane会报错
+        this.barWidth = tab ? parseFloat(tab.offsetWidth) : 0
 
-        if (index > 0) {
+        if (index > -1) {
           let offset = 0
           const gutter = this.size === 'small' ? 0 : 16
           for (let i = 0; i < index; i++) {
-            offset += parseFloat(getStyle(preTabs[i], 'width')) + gutter
+            // getComputedStyle在IE中不能正确获取元素的宽度，改为通过offsetWidth获取，修正tabs的高亮下划线在IE中错位的问题
+            offset += parseFloat(preTabs[i].offsetWidth) + gutter
           }
 
           this.barOffset = offset
