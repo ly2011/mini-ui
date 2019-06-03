@@ -22,7 +22,7 @@ $tabs-prefix-cls: #{$css-prefix}tabs;
     left: 0;
     bottom: 1px;
     z-index: 1;
-    // transition: transform 0.3s $ease-in-out;
+    transition: transform 0.3s $ease-in-out;
     transform-origin: 0 0;
   }
 
@@ -64,7 +64,7 @@ $tabs-prefix-cls: #{$css-prefix}tabs;
     list-style: none;
     box-sizing: border-box;
     position: relative;
-    // transition: transform 0.5s $ease-in-out;
+    transition: transform 0.5s $ease-in-out;
 
     &:before,
     &:after {
@@ -90,7 +90,7 @@ $tabs-prefix-cls: #{$css-prefix}tabs;
       cursor: pointer;
       text-decoration: none;
       position: relative;
-      // transition: color 0.3s $ease-in-out;
+      transition: color 0.3s $ease-in-out;
 
       &:hover {
         color: $link-hover-color;
@@ -111,10 +111,16 @@ $tabs-prefix-cls: #{$css-prefix}tabs;
   }
 
   & {
+    .#{$tabs-prefix-cls}-content-animated {
+      display: flex;
+      flex-direction: row;
+      will-change: transform;
+      transition: transform 0.3s $ease-in-out;
+    }
     .#{$tabs-prefix-cls}-tabpane {
       flex-shrink: 0;
       width: 100%;
-      // transition: opacity 0.3s;
+      transition: opacity 0.3s;
       opacity: 1;
     }
     .#{$tabs-prefix-cls}-tabpane-inactive {

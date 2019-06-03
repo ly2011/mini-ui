@@ -1,9 +1,9 @@
 <template>
   <div>
     <button @click="showSecond = !showSecond">change</button>
-    <Tabs v-model="key1">
-      <TabPane label="标签一" name="key1" disabled :index="1">标签一内容</TabPane>
-      <TabPane label="标签二" name="key2" v-if="showSecond" :index="2">标签二内容</TabPane>
+    <Tabs v-model="key1" :animated="true">
+      <TabPane label="标签一" name="key1" v-if="showSecond" :index="1">标签一内容</TabPane>
+      <TabPane label="标签二" name="key2" disabled :index="2">标签二内容</TabPane>
       <TabPane label="标签三" name="key3" :index="3">标签三内容</TabPane>
     </Tabs>
   </div>
@@ -19,7 +19,7 @@ export default {
   },
   data () {
     return {
-      key1: 'key3',
+      key1: 'key1',
       showSecond: false
     }
   }

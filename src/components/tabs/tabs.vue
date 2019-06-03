@@ -185,7 +185,7 @@ export default {
     },
     updateStatus () {
       const tabs = this.getTabs()
-      tabs.forEach(tab => { tab.show = (tab.name === this.name) })
+      tabs.forEach(tab => { tab.show = (tab.name === this.name) || this.animated })
     },
     tabCls (item) {
       return [
