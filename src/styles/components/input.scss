@@ -1,0 +1,14 @@
+@import '../common/index.scss';
+@import '../mixins/index.scss';
+$input-prefix-cls: #{$css-prefix}input;
+
+.#{$input-prefix-cls} {
+  @include input();
+  &-wrapper {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+    vertical-align: middle;
+    line-height: normal;
+  }
+}

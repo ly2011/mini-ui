@@ -1,0 +1,77 @@
+@import '../common/var.scss';
+@import 'common.scss';
+@import '../functions/index.scss';
+@mixin hover($color: $input-hover-border-color) {
+  border-color: tint($color, 20%);
+}
+@mixin hover-error() {
+  border-color: $error-color;
+}
+@mixin active($color: $input-hover-border-color) {
+  border-color: tint($color, 20%);
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(45, 140, 240, 0.2);
+}
+
+@mixin active-error() {
+  border-color: $error-color;
+  outline: 0;
+  box-shadow: 0 0 0 2px tint($error-color, 20%);
+}
+@mixin disabled() {
+  background-color: $input-disabled-bg;
+  opacity: 1;
+  cursor: $cursor-disabled;
+  color: #ccc;
+  &:hover {
+    @include hover($input-border-color);
+  }
+}
+
+@mixin input() {
+  display: inline-block;
+  width: 100%;
+  height: $input-height-base;
+  line-height: $line-height-base;
+  padding: $input-padding-vertical-base $input-padding-horizontal;
+  font-size: $font-size-small;
+  border: 1px solid $input-border-color;
+  border-radius: $btn-border-radius;
+  color: $input-color;
+  background-color: $input-bg;
+  background-image: none;
+  position: relative;
+  cursor: text;
+  @include placeholder();
+  transition: border $transition-time $ease-in-out, background $transition-time $ease-in-out,
+    box-shadow $transition-time $ease-in-out;
+  &:hover {
+    @include hover();
+  }
+  &:focus {
+    @include active();
+  }
+  &[disabled],
+  fieldset[disabled] & {
+    @include disabled();
+  }
+
+  // Reset height for textarea
+  textarea & {
+    max-width: 100%;
+    height: auto;
+    min-height: $input-height-base;
+    vertical-align: bottom;
+    font-size: $font-size-base;
+  }
+}
+
+@mixin input-error() {
+  border: 1px solid $error-color;
+  &:hover {
+    @include hover-error();
+  }
+  &:focus {
+    @include active-error();
+  }
+}
